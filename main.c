@@ -1,6 +1,7 @@
 #include <stdio.h>
-//Ã°ÅİÅÅĞò·¨
-void Bubble_Sort(int b[],int n){
+#include <malloc.h>
+//å†’æ³¡æ’åºæ³•
+void Bubble_Sort(int *b,int n){
     for(int i = 0; i < n - 1; i ++)
         for(int j = 0; j < n-i-1; j ++)
             if(b[j] > b[j+1]){
@@ -10,38 +11,38 @@ void Bubble_Sort(int b[],int n){
                 b[j+1] = temp;
             }
 }
-//¿ìËÙÅÅĞò·¨
-void Quick_Sort(int b[],int n){
+//å¿«é€Ÿæ’åºæ³•
+void Quick_Sort(int *b,int n){
     int i,j;
-    int pivot = b[0];	//ÉèÖÃ»ù×¼Öµ
+    int pivot = b[0];	//è®¾ç½®åŸºå‡†å€¼
     i = 0;
-    j = n - 1;  // ÁĞ±í×îºóÒ»¸öÔªËØ
+    j = n - 1;  // åˆ—è¡¨æœ€åä¸€ä¸ªå…ƒç´ 
     while(i < j){
-        //´óÓÚ»ù×¼ÖµÕß±£³ÖÔÚÔ­Î»ÖÃ
+        //å¤§äºåŸºå‡†å€¼è€…ä¿æŒåœ¨åŸä½ç½®
         while(i < j && b[j] > pivot){	j--;}
         if(i < j){
             b[i] = b[j];
             i++;
         }
-        //²»´óÓÚ»ù×¼ÖµÕß±£³ÖÔÚÔ­Î»ÖÃ
+        //ä¸å¤§äºåŸºå‡†å€¼è€…ä¿æŒåœ¨åŸä½ç½®
         while(i < j && b[i] <= pivot){ 	i++;}
         if(i < j){
             b[j] = b[i];
             j--;
         }
     }
-    b[i] = pivot;	//»ù×¼ÔªËØ¹éÎ»
+    b[i] = pivot;	//åŸºå‡†å…ƒç´ å½’ä½
     if(i > 1){
-        //µİ¹éµØ¶Ô×ó×ÓĞòÁĞ ½øĞĞ¿ìËÙÅÅĞò
+        //é€’å½’åœ°å¯¹å·¦å­åºåˆ— è¿›è¡Œå¿«é€Ÿæ’åº
         Quick_Sort(b,i);
     }
     if(n-i-1 > 1){
-        // µİ¹éÓÒ×ÓĞòÁĞ Í¬ÉÏ
+        // é€’å½’å³å­åºåˆ— åŒä¸Š
         Quick_Sort(b+i+1,n-i-1);
     }
 }
-// ²åÈëÅÅĞò·¨
-void Insertion_Sort(int b[],int n)
+// æ’å…¥æ’åºæ³•
+void Insertion_Sort(int *b,int n)
 {
     int i,j,current;
     int preIndex;
@@ -59,14 +60,35 @@ void Insertion_Sort(int b[],int n)
         b[preIndex+1]=current;
     }
 }
+// å¸Œå°”æ’åºæ³•
+void Shell_Sort(int *b,int n)
+{
+    int dk,i,j,m;
+    int current;
+    for(dk=n/2;dk>0;dk/=2) {
+        for (i=0;i<dk;i++) {
+            for(j=i+dk;j<=n;j+=dk) {
+                current=b[j];
+                m=j-dk;
+                while (m>=0&&b[m]>current) {
+                    b[m+dk]=b[m];
+                    m-=dk;
+                }
+                b[m+dk]=current;
+            }
+        }
+    }
+}
 int main(){
-    int a[10];
+    int *a;
+    // Create an array of ten elements
+    a=(int *)malloc(10*sizeof(int));
     printf("Please enter the elements of the array :\n");
     for(int i = 0;i < 10; i ++){
         scanf("%d",&a[i]);
     }
     printf("Output the sorted array :\n");
-    Insertion_Sort(a,10);
+    Shell_Sort(a,10);
     for(int i = 0; i < 10;  i++){
         printf("%d ",a[i]);
     }
